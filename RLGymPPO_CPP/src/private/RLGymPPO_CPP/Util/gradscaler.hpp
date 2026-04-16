@@ -7,6 +7,11 @@
 #include <torch/serialize/archive.h>
 #include <variant>
 
+#undef assert
+// This variadic macro (...) accepts any number of arguments.
+// It uses the first argument as the condition and ignores the rest (the message).
+#define assert(condition, ...) if(!(condition)) { [[unlikely]] std::abort(); }
+
 // FROM: https://gist.githubusercontent.com/dorpxam/67ad2bc222b2cf567d4a6fc298375e13
 // Very awesome implementation by dorpxam, had to make some changes to work with current libtorch:
 // - Replace c10::variant/c10::get()/c10:::visit() with std counterparts
@@ -478,10 +483,10 @@ namespace torch {
 			};
 
 			template <typename Type = double>
-			inline auto sum(PerDeviceTensors const& per_device) {
+			inline Type sum(PerDeviceTensors const& per_device) {
 				Type sum = Type(0);
 				for (auto&& [_, v] : per_device)
-					sum += v.item<Type>();
+					sum += v.template item<Type>();
 				return sum;
 			}
 		};
