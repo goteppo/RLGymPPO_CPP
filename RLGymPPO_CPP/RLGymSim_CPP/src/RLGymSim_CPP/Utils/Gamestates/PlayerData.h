@@ -19,8 +19,9 @@ namespace RLGSC {
 			matchAssists = 0,
 			matchShots = 0,
 			matchShotPasses = 0,
-			matchBumps = 0, 
 			matchDemos = 0,
+			matchBumps = 0, 
+			matchTeammateBumps = 0, // Added for tracking bumps on teammates.
 			boostPickups = 0;
 
 		bool hasJump;

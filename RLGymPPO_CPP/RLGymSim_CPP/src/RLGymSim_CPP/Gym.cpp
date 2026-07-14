@@ -28,8 +28,10 @@ namespace RLGSC {
 	}
 
 	void _BumpCallback(Arena* arena, Car* bumper, Car* victim, bool isDemo, void* userInfo) {
-		if (bumper->team == victim->team)
+		if (bumper->team == victim->team) {
+			IncPlayerCounter<&PlayerData::matchTeammateBumps>(bumper, userInfo);
 			return;
+		}
 
 		IncPlayerCounter<&PlayerData::matchBumps>(bumper, userInfo);
 
