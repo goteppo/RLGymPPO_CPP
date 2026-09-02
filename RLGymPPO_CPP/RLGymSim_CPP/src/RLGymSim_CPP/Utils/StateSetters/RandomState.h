@@ -4,12 +4,7 @@
 namespace RLGSC {
 	class RandomState : public StateSetter {
 	public:
-		bool
-			randBallSpeed, randCarSpeed, carsOnGround;
-
-		RandomState(bool randBallSpeed, bool randCarSpeed, bool carsOnGround) :
-			randBallSpeed(randBallSpeed), randCarSpeed(randCarSpeed), carsOnGround(carsOnGround) {
-		}
+		RandomState() {}
 
 		virtual GameState ResetState(Arena* arena);
 	};
