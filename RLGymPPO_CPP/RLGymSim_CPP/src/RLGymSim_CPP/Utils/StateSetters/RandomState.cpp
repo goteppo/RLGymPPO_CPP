@@ -41,7 +41,7 @@ RLGSC::GameState RLGSC::RandomState::ResetState(Arena* arena) {
 		CAR_DIST_GROUNDED_MIN = 336.0f, // 80+256 (apprx. max car length from RJ + full bottom/top corner curvature)
 
 		DEEP_NET_SPAWN = 0.15f, // Probability for one of the cars to spawn inside a goal.
-		GROUNDED_SPAWN = 0.50f, // Probability for a car to spawn grounded.
+		GROUNDED_SPAWN = 0.75f, // Probability for a car to spawn grounded.
 
 		PITCH_MAX = M_PI / 2,
 		YAW_MAX = M_PI,
