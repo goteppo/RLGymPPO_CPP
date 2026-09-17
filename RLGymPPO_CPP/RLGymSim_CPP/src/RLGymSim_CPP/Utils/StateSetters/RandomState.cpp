@@ -40,8 +40,9 @@ RLGSC::GameState RLGSC::RandomState::ResetState(Arena* arena) {
 		CAR_DIST_AERIAL_MIN   = 155.0f, // 80+75 (apprx. max car length from RJ + partial bottom/top corner curvature)
 		CAR_DIST_GROUNDED_MIN = 336.0f, // 80+256 (apprx. max car length from RJ + full bottom/top corner curvature)
 
-		DEEP_NET_SPAWN = 0.15f, // Probability for one of the cars to spawn inside a goal.
-		GROUNDED_SPAWN = 0.75f, // Probability for a car to spawn grounded.
+		DEEP_NET_SPAWN  = 0.15f, // Probability for one of the cars to spawn inside a goal.
+		GROUNDED_SPAWN  = 0.75f, // Probability for a car to spawn grounded.
+		BACKWARDS_SPAWN = 0.05f, // Probability for a car spawning grounded to be driving backwards.
 
 		PITCH_MAX = M_PI / 2,
 		YAW_MAX = M_PI,
@@ -119,10 +120,15 @@ RLGSC::GameState RLGSC::RandomState::ResetState(Arena* arena) {
 		Angle angle = Angle(::Math::RandFloat(-YAW_MAX, YAW_MAX), ::Math::RandFloat(-PITCH_MAX, PITCH_MAX), ::Math::RandFloat(-ROLL_MAX, ROLL_MAX));
 
 		if (onGround) {
-			// Randomize velocity along the 2D floor.
 			angle.pitch = angle.roll = 0;
-			cs.vel = angle.GetForwardVec() * ExpRandFloat(RLConst::CAR_MAX_SPEED, 1.0f/1410.0f); // Mean set to top (non-boosting) driving speed.
 			cs.angVel = {};
+			// Randomize velocity along the 2D floor.
+			bool driveBackwards = ::Math::RandFloat(0, 1) < BACKWARDS_SPAWN;
+			if (driveBackwards) {
+				cs.vel = -angle.GetForwardVec() * ExpRandFloat(1410.0f, 1.0f/1234.0f); // Mean set to top (non-boosting) turning speed, which is a little less than top driving speed.
+			} else {
+				cs.vel = angle.GetForwardVec() * ExpRandFloat(RLConst::CAR_MAX_SPEED, 1.0f/1410.0f); // Mean set to top (non-boosting) driving speed.
+			}
 		} else {
 			// Randomize linear and angular velocities of an aerial car.
 			
